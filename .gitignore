@@ -1,4 +1,6 @@
-test.py
-.idea
+.idea/
+__pycache__/
+
 .DS_Store
+test.py
 db.sql
