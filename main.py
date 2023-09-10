@@ -11,8 +11,8 @@ CFG = common.CFG
 
 
 # python3 main.py save_video @DoO_o @zh_testt_bot 5
-# python3 main.py save_video @DoO_o @zh_jav_plus_bot 5
-def save_video(from_chat, to_chat, limit=100):
+# python3 main.py save_video @shuiguopai @zh_jav_plus_bot 5
+def save_video(from_chat, to_chat, limit=0):
     LOG.info(f"开始保存视频: from_chat={from_chat}, to_chat={to_chat}, limit={limit}")
     saver = Saver(from_chat=from_chat, to_chat=to_chat,
                   need_send=True,
@@ -53,6 +53,7 @@ def test_tb_files(tb, limit=100):
 
 
 # python3 main.py clear_tb_files t_tg_sgp
+# python3 main.py clear_tb_files t_tg_cav
 def clear_tb_files(tb):
     LOG.info(f"开始清空表文件, table={tb}")
     db = BotDb(CFG.db_file)
