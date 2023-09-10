@@ -26,28 +26,26 @@ class Saver:
         self.db_file = db_file
         self.proxies = proxies
         self.limit = limit
-
         self.db = BotDb(self.db_file)
+        self.fail_file_ids = []  # 记录之前保存文件到某个 chat 失败了的 file id
 
     async def run_tasks(self, tasks):
-        fail = 0
         LOG.info(f"任务数: {len(tasks)}, 发送中......")
         start = time.time()
         res_list = await asyncio.gather(*tasks)
         end = time.time()
-        for res in res_list:
-            fail = fail if res else fail + 1
+        fail = len(list(filter(lambda x: not x, res_list)))
         LOG.info(f"完成任务, 失败数: {fail}, 耗时: {end - start}s")
-        return []
 
-    async def save_to_bot(self, app, file_id, title):
+    async def save_video_to_bot(self, app, file_id):
         try:
-            # 链接文件到某个 chat
-            await asyncio.sleep(random.randint(3, 8))
-            await app.send_video(chat_id=self.to_chat, video=file_id, caption=title)
+            # 链接视频到某个 chat
+            await asyncio.sleep(random.randint(3, 12))
+            await app.send_video(chat_id=self.to_chat, video=file_id)
             return True
         except Exception as e:
             LOG.error(f"发送 {file_id} 失败: {e}")
+            self.fail_file_ids.append(file_id)
             return False
 
     async def save_video(self):
@@ -78,9 +76,20 @@ class Saver:
                     count_new_video += 1
                     new_videos.append(v)
                 if self.need_send:
-                    tasks.append(asyncio.create_task(self.save_to_bot(app, file_id, title)))
+                    tasks.append(asyncio.create_task(self.save_video_to_bot(app, file_id)))
                 if len(tasks) == 50:
-                    tasks = await self.run_tasks(tasks)
+                    await self.run_tasks(tasks)
+                    tasks = []
             await self.run_tasks(tasks)
-        LOG.info(f"得到最新视频数量: {count_new_video}")
+            retry_times = 0
+            while len(self.fail_file_ids) > 0:
+                if retry_times == 10:
+                    LOG.error(f"重试次数已经达到 10 次, 不再重试, 剩余保存失败的视频 id 数: {len(self.fail_file_ids)}")
+                    break
+                LOG.warning(f"剩余保存失败的视频 id 数: {len(self.fail_file_ids)}, 已重试次数: {retry_times}, 开始重试...")
+                tasks = [asyncio.create_task(self.save_video_to_bot(app, file_id)) for file_id in self.fail_file_ids]
+                self.fail_file_ids = []
+                await self.run_tasks(tasks)
+                retry_times += 1
+        LOG.info(f"得到视频总数: {count_new_video}, 保存视频到机器人的总失败数: {len(self.fail_file_ids)}")
         self.db.batch_insert_medias(new_videos, self.media_type)

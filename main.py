@@ -12,6 +12,7 @@ CFG = common.CFG
 
 # python3 main.py save_video @DoO_o @zh_testt_bot 5
 # python3 main.py save_video @shuiguopai @zh_jav_plus_bot 5
+# python3 main.py save_video @shuiguopai @zh_testt_bot
 def save_video(from_chat, to_chat, limit=0):
     LOG.info(f"开始保存视频: from_chat={from_chat}, to_chat={to_chat}, limit={limit}")
     saver = Saver(from_chat=from_chat, to_chat=to_chat,
