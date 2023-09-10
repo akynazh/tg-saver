@@ -6,3 +6,4 @@
 
 - Pyrogram
 - Sqlite3
+- FastApi

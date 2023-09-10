@@ -2,6 +2,4 @@
 __pycache__/
 
 .DS_Store
-test.py
-main.py
-db.sql
+test*

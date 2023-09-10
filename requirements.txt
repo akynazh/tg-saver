@@ -1,1 +1,5 @@
+fastapi==0.103.1
+pydantic==2.3.0
 Pyrogram==2.0.92
+pyTelegramBotAPI==4.13.0
+PyYAML==6.0.1

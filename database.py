@@ -7,6 +7,10 @@ LOG = logging.getLogger(__name__)
 class BotDb:
     TYPE_SGP = 1
     TYPE_CAV = 2
+    CHAT_TYPE_MAP = {
+        "@shuiguopai": TYPE_SGP,
+        "@DoO_o": TYPE_CAV
+    }
 
     def __init__(self, path_db_file: str):
         self.path_db_file = path_db_file
@@ -48,7 +52,6 @@ class BotDb:
             conn = self.get_conn()
             cur = conn.cursor()
             for m in media_list:
-                LOG.info(f"插入数据: {m}")
                 if media_type == BotDb.TYPE_SGP:
                     self.insert_sgp_av(m, cur)
                 elif media_type == BotDb.TYPE_CAV:
