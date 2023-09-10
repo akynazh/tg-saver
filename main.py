@@ -11,6 +11,7 @@ CFG = common.CFG
 
 
 # python3 main.py save_video @DoO_o @zh_testt_bot 5
+# python3 main.py save_video @DoO_o @zh_jav_plus_bot 5
 def save_video(from_chat, to_chat, limit=100):
     LOG.info(f"开始保存视频: from_chat={from_chat}, to_chat={to_chat}, limit={limit}")
     saver = Saver(from_chat=from_chat, to_chat=to_chat,
@@ -26,10 +27,12 @@ def save_video(from_chat, to_chat, limit=100):
     asyncio.run(saver.save_video())
 
 
-# python3 main.py test_db_files t_tg_sgp 5
+# python3 main.py test_tb_files t_tg_sgp 5
+# python3 main.py test_tb_files t_tg_cav 5
 def test_tb_files(tb, limit=100):
     LOG.info(f"开始测试数据库文件, table={tb}, limit={limit}")
-    telebot.apihelper.proxy = CFG.proxy_json
+    if CFG.use_proxy == "1":
+        telebot.apihelper.proxy = CFG.proxy_json
     bot = telebot.TeleBot(token=CFG.token)
     db = BotDb(CFG.db_file)
     conn = db.get_conn()
