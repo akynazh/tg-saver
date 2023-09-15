@@ -1,0 +1,347 @@
+{
+  "_": "Message",
+  "id": 54824,
+  "sender_chat": {
+    "_": "Chat",
+    "id": -1001256699846,
+    "type": "ChatType.CHANNEL",
+    "is_verified": false,
+    "is_restricted": true,
+    "is_creator": false,
+    "is_scam": false,
+    "is_fake": false,
+    "title": "偷拍 91反差🌸IKIVIY🌸中文乱伦学生母狗强奸处女",
+    "username": "DoO_o",
+    "photo": {
+      "_": "ChatPhoto",
+      "small_file_id": "AQADAQADxakxG6T3GUcAEAIAAzo4c-AW____Fk8JJz6d6AoABB4E",
+      "small_photo_unique_id": "AgADxakxG6T3GUc",
+      "big_file_id": "AQADAQADxakxG6T3GUcAEAMAAzo4c-AW____Fk8JJz6d6AoABB4E",
+      "big_photo_unique_id": "AgADxakxG6T3GUc"
+    },
+    "dc_id": 1,
+    "has_protected_content": false,
+    "restrictions": [
+      {
+        "_": "Restriction",
+        "platform": "ios",
+        "reason": "porn",
+        "text": "This channel can’t be displayed because it was used to spread pornographic content."
+      }
+    ]
+  },
+  "date": "2023-09-15 20:53:51",
+  "chat": {
+    "_": "Chat",
+    "id": -1001256699846,
+    "type": "ChatType.CHANNEL",
+    "is_verified": false,
+    "is_restricted": true,
+    "is_creator": false,
+    "is_scam": false,
+    "is_fake": false,
+    "title": "偷拍 91反差🌸IKIVIY🌸中文乱伦学生母狗强奸处女",
+    "username": "DoO_o",
+    "photo": {
+      "_": "ChatPhoto",
+      "small_file_id": "AQADAQADxakxG6T3GUcAEAIAAzo4c-AW____Fk8JJz6d6AoABB4E",
+      "small_photo_unique_id": "AgADxakxG6T3GUc",
+      "big_file_id": "AQADAQADxakxG6T3GUcAEAMAAzo4c-AW____Fk8JJz6d6AoABB4E",
+      "big_photo_unique_id": "AgADxakxG6T3GUc"
+    },
+    "dc_id": 1,
+    "has_protected_content": false,
+    "restrictions": [
+      {
+        "_": "Restriction",
+        "platform": "ios",
+        "reason": "porn",
+        "text": "This channel can’t be displayed because it was used to spread pornographic content."
+      }
+    ]
+  },
+  "mentioned": false,
+  "scheduled": false,
+  "from_scheduled": false,
+  "media": "MessageMediaType.PHOTO",
+  "edit_date": "2023-09-15 21:53:53",
+  "has_protected_content": false,
+  "has_media_spoiler": false,
+  "caption_entities": [
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 0,
+      "length": 2,
+      "custom_emoji_id": 5212920133504212456
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 15,
+      "length": 2,
+      "custom_emoji_id": 5212920133504212456
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 30,
+      "length": 2,
+      "custom_emoji_id": 6323610929791502316
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 46,
+      "length": 2,
+      "custom_emoji_id": 6323610929791502316
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 49,
+      "length": 2,
+      "custom_emoji_id": 5339081838591746126
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 190,
+      "length": 2,
+      "custom_emoji_id": 5217911744495624141
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 196,
+      "length": 2,
+      "custom_emoji_id": 5217911744495624141
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 199,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.URL",
+      "offset": 205,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.UNDERLINE",
+      "offset": 205,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 218,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 221,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.URL",
+      "offset": 227,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.UNDERLINE",
+      "offset": 227,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 240,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 247,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 260,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 266,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 280,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 283,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 301,
+      "length": 2,
+      "custom_emoji_id": 5318912792428814144
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 316,
+      "length": 1,
+      "custom_emoji_id": 5332729895493575474
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 335,
+      "length": 1,
+      "custom_emoji_id": 5332729895493575474
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 337,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.URL",
+      "offset": 343,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.UNDERLINE",
+      "offset": 343,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 356,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 359,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.URL",
+      "offset": 365,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.UNDERLINE",
+      "offset": 365,
+      "length": 9
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 378,
+      "length": 2,
+      "custom_emoji_id": 5314501040677070947
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 381,
+      "length": 2,
+      "custom_emoji_id": 5212920133504212456
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.MENTION",
+      "offset": 388,
+      "length": 6
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 395,
+      "length": 2,
+      "custom_emoji_id": 5212920133504212456
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.MENTION",
+      "offset": 411,
+      "length": 14
+    },
+    {
+      "_": "MessageEntity",
+      "type": "MessageEntityType.CUSTOM_EMOJI",
+      "offset": 426,
+      "length": 2,
+      "custom_emoji_id": 5212920133504212456
+    }
+  ],
+  "photo": {
+    "_": "Photo",
+    "file_id": "AgACAgUAAx0CSue3xgAC1ihlBI7qM7ossnHpdR8ujGLreK7fpQACFboxG48OGFS7tmTk_gddNAAIAQADAgADeQAHHgQ",
+    "file_unique_id": "AgADFboxG48OGFQ",
+    "width": 1280,
+    "height": 852,
+    "file_size": 67563,
+    "date": "2023-09-14 21:06:05",
+    "thumbs": [
+      {
+        "_": "Thumbnail",
+        "file_id": "AgACAgUAAx0CSue3xgAC1ihlBI7qM7ossnHpdR8ujGLreK7fpQACFboxG48OGFS7tmTk_gddNAAIAQADAgADbQAHHgQ",
+        "file_unique_id": "AgADFboxG48OGFQ",
+        "width": 320,
+        "height": 213,
+        "file_size": 13009
+      }
+    ]
+  },
+  "caption": "🔥大赢家国际娱乐城12周年庆🔥\n➖➖➖➖➖➖➖➖➖➖➖\n🎱电子捕鱼大放水8888倍爆奖🎱\n⚽️体育🙋🏼‍♀️真人🎮电竞\n🃏棋牌🎰电子🐠捕鱼                                                                                                               🏐专属网址🏐\n✔️👉  dyj77.pro  👈✔️\n✔️👉  dyj99.pro  👈✔️\n    💰首存最高赠送8888元💰\n   💰投注1元起 返水最高3%💰\n💰U进U出  安全无忧 提款秒到账💰\n➖➖➖➖➖➖➖➖➖➖➖\n✅Telegram客户尊享存多少送多少✅\n✔️👉  dyj77.pro  👈✔️\n✔️👉  dyj99.pro  👈✔️\n🔥点击咨询：@dyj00\n🔥大赢家国际娱乐城官方频道： @bet365sportty\n🔥大赢家欢迎个人/团队/seo/主播/劫持/电销/群主/站长/车队  前来咨询代理活动 合作共赢",
+  "views": 9373,
+  "forwards": 0,
+  "outgoing": false,
+  "reactions": {
+    "_": "MessageReactions",
+    "reactions": [
+      {
+        "_": "Reaction",
+        "emoji": "👍",
+        "count": 9
+      }
+    ]
+  }
+}

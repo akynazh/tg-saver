@@ -5,11 +5,11 @@ from pyrogram import Client
 from fastapi.responses import UJSONResponse
 from fastapi import FastAPI
 from pydantic import BaseModel
-import common
+from common import CFG
+import logging
 
+LOG = logging.getLogger(__name__)
 APP = FastAPI()
-LOG = common.LOG
-CFG = common.CFG
 
 
 class Item(BaseModel):

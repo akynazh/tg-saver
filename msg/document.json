@@ -1,0 +1,101 @@
+{
+  "_": "Message",
+  "id": 115,
+  "sender_chat": {
+    "_": "Chat",
+    "id": -1001402820628,
+    "type": "ChatType.CHANNEL",
+    "is_verified": false,
+    "is_restricted": false,
+    "is_creator": false,
+    "is_scam": false,
+    "is_fake": false,
+    "title": "Internet Download Manager - IDM",
+    "username": "idm_en",
+    "photo": {
+      "_": "ChatPhoto",
+      "small_file_id": "AQADAQADr6cxGwMSwB4AEAIAA-yXvdcW____W4EDzoqNfRYABB4E",
+      "small_photo_unique_id": "AgADr6cxGwMSwB4",
+      "big_file_id": "AQADAQADr6cxGwMSwB4AEAMAA-yXvdcW____W4EDzoqNfRYABB4E",
+      "big_photo_unique_id": "AgADr6cxGwMSwB4"
+    },
+    "dc_id": 1,
+    "has_protected_content": false
+  },
+  "date": "2023-04-19 12:03:55",
+  "chat": {
+    "_": "Chat",
+    "id": -1001402820628,
+    "type": "ChatType.CHANNEL",
+    "is_verified": false,
+    "is_restricted": false,
+    "is_creator": false,
+    "is_scam": false,
+    "is_fake": false,
+    "title": "Internet Download Manager - IDM",
+    "username": "idm_en",
+    "photo": {
+      "_": "ChatPhoto",
+      "small_file_id": "AQADAQADr6cxGwMSwB4AEAIAA-yXvdcW____W4EDzoqNfRYABB4E",
+      "small_photo_unique_id": "AgADr6cxGwMSwB4",
+      "big_file_id": "AQADAQADr6cxGwMSwB4AEAMAA-yXvdcW____W4EDzoqNfRYABB4E",
+      "big_photo_unique_id": "AgADr6cxGwMSwB4"
+    },
+    "dc_id": 1,
+    "has_protected_content": false
+  },
+  "mentioned": false,
+  "scheduled": false,
+  "from_scheduled": false,
+  "media": "MessageMediaType.DOCUMENT",
+  "edit_date": "2023-04-19 12:21:51",
+  "has_protected_content": false,
+  "document": {
+    "_": "Document",
+    "file_id": "BQACAgEAAx0CU51YFAADc2UEmDPl3AG0dIR6RA3rA_X2ubr_AALqAwACpxABRoDBsjSgPvKuHgQ",
+    "file_unique_id": "AgAD6gMAAqcQAUY",
+    "file_name": "idman641build11.exe",
+    "mime_type": "application/x-ms-dos-executable",
+    "file_size": 11318000,
+    "date": "2023-04-19 12:03:55"
+  },
+  "caption": "IDM 6.41build11",
+  "views": 17921,
+  "forwards": 218,
+  "outgoing": false,
+  "reactions": {
+    "_": "MessageReactions",
+    "reactions": [
+      {
+        "_": "Reaction",
+        "emoji": "❤",
+        "count": 35
+      },
+      {
+        "_": "Reaction",
+        "emoji": "👌",
+        "count": 6
+      },
+      {
+        "_": "Reaction",
+        "emoji": "⚡",
+        "count": 4
+      },
+      {
+        "_": "Reaction",
+        "emoji": "🔥",
+        "count": 4
+      },
+      {
+        "_": "Reaction",
+        "emoji": "👍",
+        "count": 3
+      },
+      {
+        "_": "Reaction",
+        "emoji": "😘",
+        "count": 1
+      }
+    ]
+  }
+}
