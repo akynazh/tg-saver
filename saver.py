@@ -131,8 +131,7 @@ class Saver:
             return False
         return True
 
-    def check_if_has_new_msg(self, msg):
-        old_cur_id = -1 if self.renew else self.handler.get_last_msg_id_from_db()
+    def check_if_has_new_msg(self, msg, old_cur_id):
         # 没有更新的消息
         if old_cur_id > msg.id:
             LOG.warning(f"没有更新的消息: {old_cur_id} >= {msg.id}, 退出程序~")
@@ -182,12 +181,13 @@ $ 未保存文件到数据库的数目: {len(self.success_msg_list)}
             self.test()
             return
         count_new_file = 0
+        old_cur_id = -1 if self.renew else self.handler.get_last_msg_id_from_db()
         async with Client(self.session_file, self.api_id, self.api_hash, proxy=self.proxies,
                           parse_mode=enums.ParseMode.DISABLED) as app:
             self.app = app
             has_update = True
             async for msg in app.get_chat_history(self.from_chat, limit=self.limit):
-                if not self.check_if_has_new_msg(msg):
+                if not self.check_if_has_new_msg(msg, old_cur_id):
                     has_update = False
                     break
                 if not self.filter_file_by_type(msg):
