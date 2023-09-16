@@ -1,5 +1,6 @@
 import os
 import logging
+from logging.handlers import RotatingFileHandler
 from config import Config
 
 PATH_ROOT = f'{os.path.expanduser("~")}/.tg_saver'
@@ -33,10 +34,10 @@ class Logger:
         self.logger = logging.getLogger()
         formatter = logging.Formatter(
             "[%(asctime)s] %(levelname)s: %(message)s")
-        file_handler = logging.FileHandler(path_log_file)
-        file_handler.setFormatter(formatter)
         stream_handler = logging.StreamHandler()
         stream_handler.setFormatter(formatter)
-        self.logger.addHandler(file_handler)
+        r_file_handler = RotatingFileHandler(path_log_file, maxBytes=1024 * 1024 * 16, backupCount=1)
+        r_file_handler.setFormatter(formatter)
+        self.logger.addHandler(r_file_handler)
         self.logger.addHandler(stream_handler)
         self.logger.setLevel(log_level)

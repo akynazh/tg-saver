@@ -80,6 +80,10 @@ class Saver:
                 LOG.error(
                     f"重试次数已经达到 {self.retry_times} 次, 停止重试, 剩余保存失败的文件数: {len(self.fail_msg_list)}")
                 break
+            if cur_retry_times >= 3:
+                sleep_time = cur_retry_times * 60
+                LOG.warning(f"重试次数过多, 进入休眠, 休眠时间: {sleep_time}s")
+                await asyncio.sleep(sleep_time)
             LOG.warning(
                 f"重试保存文件 id 到 chat, 剩余保存失败的文件数: {len(self.fail_msg_list)}, 已重试次数: {cur_retry_times}, 开始重试...")
             self.tasks = [asyncio.create_task(self.save_file_to_chat(msg)) for msg in self.fail_msg_list]
