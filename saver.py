@@ -213,15 +213,15 @@ def main():
     parser.add_argument("-fc", "--from_chat", type=str, required=True, help="from_chat")
     parser.add_argument("-tc", "--to_chat", type=str, required=True, help="to_chat")
     parser.add_argument("-ft", "--file_type", type=int, required=True, help="file_type")
-    parser.add_argument("-ct", "--c_type", type=int, default=0, help="c_type")
-    parser.add_argument("--limit", type=int, default=100, help="limit")  # default limit 100
-    parser.add_argument("--max_test_count", type=int, default=10, help="max_test_count")
-    parser.add_argument("--task_count_per_time", type=int, default=100, help="task_count_per_time")
-    parser.add_argument("--need_save_to_chat", action="store_false", help="need_save_to_chat")  # default true
-    parser.add_argument("--need_save_to_db", action="store_false", help="need_save_to_db")  # default true
-    parser.add_argument("--renew", action="store_true", help="renew")  # default false
-    parser.add_argument("--need_test", action="store_true", help="need_test")  # default false
-    parser.add_argument("--test_only", action="store_true", help="test_only")  # default false
+    parser.add_argument("-ct", "--c_type", type=int, default=0, help="c_type # default 0")
+    parser.add_argument("--limit", type=int, default=100, help="limit # default 100")
+    parser.add_argument("--max_test_count", type=int, default=10, help="max_test_count # default 10")
+    parser.add_argument("--task_count_per_time", type=int, default=100, help="task_count_per_time # default 100")
+    parser.add_argument("--need_save_to_chat", action="store_false", help="need_save_to_chat # default true")
+    parser.add_argument("--need_save_to_db", action="store_false", help="need_save_to_db # default true")
+    parser.add_argument("--renew", action="store_true", help="renew # default false")
+    parser.add_argument("--need_test", action="store_true", help="need_test # default false")
+    parser.add_argument("--test_only", action="store_true", help="test_only # default false")
     args = parser.parse_args()
     saver = Saver(
         from_chat=args.from_chat,
@@ -246,9 +246,5 @@ def main():
     asyncio.run(saver.save())
 
 
-# python3 saver.py -fc DoO_o -tc zh_testt_bot -ft 1
-# python3 saver.py -fc yande_rank -tc zh_testt_bot -ft 2
-# python3 saver.py -fc idm_en -tc zh_testt_bot -ft 3
-# python3 saver.py -fc shuiguopai -tc zh_testt_bot -ft 1 -ct 1
 if __name__ == '__main__':
     main()
