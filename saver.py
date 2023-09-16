@@ -88,7 +88,7 @@ class Saver:
             cur_retry_times += 1
 
     async def save_file_to_chat(self, msg):
-        await asyncio.sleep(random.randint(3, 9))
+        await asyncio.sleep(random.randint(3, 11))
         try:
             await self.handler.save_file_to_chat(self.app, msg)
             self.handler.total_save_to_chat_success += 1
