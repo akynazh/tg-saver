@@ -1,4 +1,5 @@
 import os
+import logging
 from config import Config
 
 PATH_ROOT = f'{os.path.expanduser("~")}/.tg_saver'
@@ -18,8 +19,6 @@ class FileType:
         PHOTO: "MessageMediaType.PHOTO",
         DOCUMENT: "MessageMediaType.DOCUMENT",
     }
-
-import logging
 
 
 class Logger:

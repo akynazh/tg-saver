@@ -1,6 +1,5 @@
 import re
 import sys
-import time
 import sqlite3
 import common
 import logging
@@ -36,7 +35,8 @@ class FileHandler:
         conn = None
         try:
             conn = self.get_db_conn()
-            rows = conn.cursor().execute(f"select file_id from {self.tb_name} limit {int(limit)}").fetchall()
+            rows = conn.cursor().execute(f"select file_id from {self.tb_name} ORDER BY random() limit {int(limit)}") \
+                .fetchall()
             LOG.info(f"待测试条数: {len(rows)}")
             fail = 0
             bot.send_message(chat_id=common.CFG.user_id, text="#测试开始")

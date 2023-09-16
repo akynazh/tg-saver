@@ -3,6 +3,7 @@ import time
 import random
 import common
 import asyncio
+import argparse
 from pyrogram import Client, enums
 from handlers import FileHandlerFactory
 
@@ -16,8 +17,9 @@ class Saver:
     fail_msg_list = []
 
     def __init__(self, from_chat: str, to_chat: str, need_save_to_chat: bool, need_save_to_db: bool, file_type: int,
-                 session_file: str, api_id: int, api_hash: str, db_file: str, need_test=False, max_test_count=100,
-                 renew=False, proxies=None, limit=0, retry_times=10, c_type=0, task_count_per_time=100):
+                 session_file: str, api_id: int, api_hash: str, db_file: str, need_test=False, test_only=False,
+                 max_test_count=100, renew=False, proxies=None, limit=0, retry_times=10, c_type=0,
+                 task_count_per_time=100):
         """TgChat 文件保存器
 
         :param from_chat: 抓取文件的目标 chat
@@ -30,6 +32,7 @@ class Saver:
         :param api_hash: tg api hash
         :param db_file: sqlite3 数据库文件
         :param need_test: 完成后是否需要测试
+        :param test_only: 是否只测试
         :param max_test_count: 最大测试条数
         :param renew: 是否重新获取(忽略上次获取到的最新消息 id)
         :param proxies: 代理 dict
@@ -48,6 +51,7 @@ class Saver:
         self.api_hash = api_hash
         self.db_file = db_file
         self.need_test = need_test
+        self.test_only = test_only
         self.max_test_count = max_test_count
         self.renew = renew
         self.proxies = proxies
@@ -55,21 +59,6 @@ class Saver:
         self.retry_times = retry_times
         self.c_type = c_type
         self.task_count_per_time = task_count_per_time
-        self.start_msg = f"""
-##################################################################
-$ 启动 Tg-saver ^_^ [Made by jzh: https://github.com/akynazh/tg-saver]
-$ 抓取目标 chat: {self.from_chat} 
-$ 保存目标 chat: {self.to_chat}
-$ 保存文件类型: {common.FileType.FILE_TAG_MAP[self.file_type]}
-$ 是否保存到 chat: {self.need_save_to_chat}
-$ 是否保存到数据库: {self.need_save_to_db}
-$ 是否重新获取: {self.renew}
-$ 获取条数限制: {self.limit}
-$ 代理信息: {self.proxies}
-$ 数据库地址: {self.db_file}
-$ Session 文件地址: {self.session_file}
-##################################################################
-"""
 
         self.file_type_tag = common.FileType.FILE_TAG_MAP[self.file_type]
         self.handler = FileHandlerFactory(self.file_type, self.from_chat, self.to_chat, self.db_file,
@@ -153,8 +142,45 @@ $ Session 文件地址: {self.session_file}
     def test(self):
         self.handler.test_tb_files(self.max_test_count)
 
+    def log_start(self):
+        LOG.info(f"""
+
+##################################################################
+$ 启动 Tg-saver ^_^ [Made by jzh: https://github.com/akynazh/tg-saver]
+$ 抓取目标 chat: {self.from_chat} 
+$ 保存目标 chat: {self.to_chat}
+$ 保存文件类型: {common.FileType.FILE_TAG_MAP[self.file_type]}
+$ 是否保存到 chat: {self.need_save_to_chat}
+$ 是否保存到数据库: {self.need_save_to_db}
+$ 是否重新获取: {self.renew}
+$ 是否测试: {self.need_test}
+$ 是否只进行测试: {self.test_only}
+$ 最大测试条数: {self.max_test_count}
+$ 获取条数限制: {self.limit}
+$ 代理信息: {self.proxies}
+$ 数据库地址: {self.db_file}
+$ Session 文件地址: {self.session_file}
+##################################################################
+""")
+
+    def log_end(self, count_new_file=0):
+        LOG.info(f"""
+
+##################################################################
+$ 完成任务! ^_^
+$ 得到文件总数: {count_new_file}
+$ 成功保存文件 id 到 chat 的数目: {self.handler.total_save_to_chat_success}
+$ 成功保存文件到数据库的数目: {self.handler.total_save_to_db_success}
+$ 未保存文件 id 到 chat 的数目: {len(self.fail_msg_list)}
+$ 未保存文件到数据库的数目: {len(self.success_msg_list)}
+##################################################################
+""")
+
     async def save(self):
-        LOG.info(self.start_msg)
+        self.log_start()
+        if self.test_only:
+            self.test()
+            return
         count_new_file = 0
         async with Client(self.session_file, self.api_id, self.api_hash, proxy=self.proxies,
                           parse_mode=enums.ParseMode.DISABLED) as app:
@@ -177,60 +203,52 @@ $ Session 文件地址: {self.session_file}
                     await self.retry_save_file_to_chat_tasks()
                 if self.need_save_to_db:
                     await self.save_file_to_db()
-        LOG.info(
-            f"""
-##################################################################
-$ 完成任务! ^_^
-$ 得到文件总数: {count_new_file}
-$ 成功保存文件 id 到 chat 的数目: {self.handler.total_save_to_chat_success}
-$ 成功保存文件到数据库的数目: {self.handler.total_save_to_db_success}
-$ 未保存文件 id 到 chat 的数目: {len(self.fail_msg_list)}
-$ 未保存文件到数据库的数目: {len(self.success_msg_list)}
-##################################################################
-""")
+        self.log_end(count_new_file)
         if self.need_test:
             self.test()
 
 
 def main():
-    from_chat = sys.argv[1]
-    to_chat = sys.argv[2]
-    file_type = int(sys.argv[3])
-    need_save_to_chat = bool(int(sys.argv[4]))
-    need_save_to_db = bool(int(sys.argv[5]))
-    renew = bool(int(sys.argv[6]))
-    limit = int(sys.argv[7])
-    c_type = int(sys.argv[8])
-    need_test = bool(int(sys.argv[9]))
-    max_test_count = int(sys.argv[10])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-fc", "--from_chat", type=str, required=True, help="from_chat")
+    parser.add_argument("-tc", "--to_chat", type=str, required=True, help="to_chat")
+    parser.add_argument("-ft", "--file_type", type=int, required=True, help="file_type")
+    parser.add_argument("-ct", "--c_type", type=int, default=0, help="c_type")
+    parser.add_argument("--limit", type=int, default=100, help="limit")  # default limit 100
+    parser.add_argument("--max_test_count", type=int, default=10, help="max_test_count")
+    parser.add_argument("--task_count_per_time", type=int, default=100, help="task_count_per_time")
+    parser.add_argument("--need_save_to_chat", action="store_false", help="need_save_to_chat")  # default true
+    parser.add_argument("--need_save_to_db", action="store_false", help="need_save_to_db")  # default true
+    parser.add_argument("--renew", action="store_true", help="renew")  # default false
+    parser.add_argument("--need_test", action="store_true", help="need_test")  # default false
+    parser.add_argument("--test_only", action="store_true", help="test_only")  # default false
+    args = parser.parse_args()
     saver = Saver(
-        from_chat=from_chat,
-        to_chat=to_chat,
-        need_save_to_chat=need_save_to_chat,
-        need_save_to_db=need_save_to_db,
-        file_type=file_type,
+        from_chat=args.from_chat,
+        to_chat=args.to_chat,
+        need_save_to_chat=args.need_save_to_chat,
+        need_save_to_db=args.need_save_to_db,
+        file_type=args.file_type,
         session_file=common.SESSION_FILE,
         api_id=common.CFG.api_id,
         api_hash=common.CFG.api_hash,
         db_file=common.CFG.db_file,
-        need_test=need_test,
-        max_test_count=max_test_count,
-        renew=renew,
+        need_test=args.need_test,
+        test_only=args.test_only,
+        max_test_count=args.max_test_count,
+        renew=args.renew,
         proxies=common.CFG.proxy_pyrogram_json,
-        limit=limit,
+        limit=args.limit,
         retry_times=10,
-        c_type=c_type,
-        task_count_per_time=100
+        c_type=args.c_type,
+        task_count_per_time=args.task_count_per_time
     )
     asyncio.run(saver.save())
 
 
-# todo: 转为命令行参数
-# python3 saver.py {from_chat} {to_chat} {file_type} {need_save_to_chat} {need_save_to_db} {renew} {limit} {c_type} {need_test} {max_test_count}
-# python3 saver.py DoO_o       zh_testt_bot    1            1                  1                0    30       0       1            10
-# python3 saver.py DoO_o       zh_testt_bot    2            1                  1                0    30       0       1            10
-# python3 saver.py yande_rank  zh_testt_bot    2            1                  1                0    30       0       1            10
-# python3 saver.py idm_en      zh_testt_bot    3            1                  1                0    30       0       1            10
-# python3 saver.py shuiguopai  zh_testt_bot    1            1                  1                0    30       1       1            10
+# python3 saver.py -fc DoO_o -tc zh_testt_bot -ft 1
+# python3 saver.py -fc yande_rank -tc zh_testt_bot -ft 2
+# python3 saver.py -fc idm_en -tc zh_testt_bot -ft 3
+# python3 saver.py -fc shuiguopai -tc zh_testt_bot -ft 1 -ct 1
 if __name__ == '__main__':
     main()
