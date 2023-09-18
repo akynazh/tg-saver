@@ -17,6 +17,7 @@ class FileHandler:
                            );"""
     total_save_to_db_success = 0
     total_save_to_chat_success = 0
+    pat_ugly_words = re.compile(r"\b(http|https|@|)\b")
 
     def __init__(self, file_type, from_chat, to_chat, db_file):
         self.file_type = file_type
@@ -138,7 +139,12 @@ class FileHandler:
         file_id = self.get_file_id_from_msg(msg)
         if not cur.execute(f"SELECT file_id FROM {self.tb_name} where file_id = ?", (file_id,)).fetchone():
             cur.execute(f"INSERT INTO {self.tb_name}(file_id, content) VALUES(?, ?)",
-                        (file_id, self.get_file_content_from_msg(msg)))
+                        (file_id, self.filter_ugly_content(self.get_file_content_from_msg(msg))))
+
+    def filter_ugly_content(self, content):
+        if self.pat_ugly_words.findall(content):
+            return "hello world"
+        return content
 
     def get_tb_name_by_file_type(self):
         pass
