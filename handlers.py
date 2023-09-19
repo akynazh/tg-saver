@@ -17,7 +17,7 @@ class FileHandler:
                            );"""
     total_save_to_db_success = 0
     total_save_to_chat_success = 0
-    pat_ugly_words = re.compile(r"\b(http|https|ftp|@|)\b")
+    pat_ugly_words = re.compile(r"\b(http|https|@)\b")
 
     def __init__(self, file_type, from_chat, to_chat, db_file):
         self.file_type = file_type
@@ -143,7 +143,7 @@ class FileHandler:
 
     def filter_ugly_content(self, content):
         if self.pat_ugly_words.findall(content):
-            return "hello world"
+            return "-"
         return content
 
     def get_tb_name_by_file_type(self):

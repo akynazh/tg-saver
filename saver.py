@@ -1,3 +1,4 @@
+import re
 import sys
 import time
 import random
@@ -15,6 +16,7 @@ class Saver:
     tasks = []
     success_msg_list = []
     fail_msg_list = []
+    pat_flood_wait = re.compile(r"A wait of (\d+) seconds is required")
 
     def __init__(self, from_chat: str, to_chat: str, need_save_to_chat: bool, need_save_to_db: bool, file_type: int,
                  session_file: str, api_id: int, api_hash: str, db_file: str, need_test=False, test_only=False,
@@ -104,7 +106,10 @@ class Saver:
         except Exception as e:
             self.fail_msg_list.append(msg)
             LOG.error(f"保存文件 id 到 {self.to_chat} 失败: {e}")
-            await asyncio.sleep(random.randint(1, 50))
+            wait_time = self.pat_flood_wait.findall(str(e))
+            if wait_time:
+                LOG.warning(f"根据限制信息提示开始休眠 {wait_time[0]}s ......")
+                await asyncio.sleep(int(wait_time[0]))
             return False
 
     async def save_file_to_db(self):
