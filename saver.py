@@ -92,17 +92,19 @@ class Saver:
             cur_retry_times += 1
 
     async def save_file_to_chat(self, msg):
-        await asyncio.sleep(random.randint(3, 11))
+        await asyncio.sleep(random.randint(1, 50))
         try:
             await self.handler.save_file_to_chat(self.app, msg)
             self.handler.total_save_to_chat_success += 1
             if self.need_save_to_db:
                 self.success_msg_list.append(msg)
             LOG.info(f"成功保存文件 id:{self.handler.get_file_id_from_msg(msg)} 到 {self.to_chat}")
+            await asyncio.sleep(random.randint(1, 50))
             return True
         except Exception as e:
             self.fail_msg_list.append(msg)
             LOG.error(f"保存文件 id 到 {self.to_chat} 失败: {e}")
+            await asyncio.sleep(random.randint(1, 50))
             return False
 
     async def save_file_to_db(self):
