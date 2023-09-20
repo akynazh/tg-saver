@@ -170,7 +170,7 @@ class VideoHandler(FileHandler):
         return msg.video.file_id
 
     def get_file_content_from_msg(self, msg):
-        return msg.caption
+        return msg.caption if msg.caption else "-"
 
     async def save_file_to_chat(self, app, msg):
         await app.send_video(chat_id=self.to_chat, video=self.get_file_id_from_msg(msg))
@@ -187,7 +187,7 @@ class PhotoHandler(FileHandler):
         return msg.photo.file_id
 
     def get_file_content_from_msg(self, msg):
-        return msg.caption
+        return msg.caption if msg.caption else "-"
 
     async def save_file_to_chat(self, app, msg):
         await app.send_photo(chat_id=self.to_chat, photo=self.get_file_id_from_msg(msg))
@@ -204,7 +204,7 @@ class DocumentHandler(FileHandler):
         return msg.document.file_id
 
     def get_file_content_from_msg(self, msg):
-        return msg.document.file_name
+        return msg.document.file_name if msg.document.file_name else "-"
 
     async def save_file_to_chat(self, app, msg):
         await app.send_document(chat_id=self.to_chat, document=self.get_file_id_from_msg(msg))
