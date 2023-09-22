@@ -1,9 +1,9 @@
-import re
-import sys
-import sqlite3
-import common
 import logging
+import re
+import sqlite3
+import sys
 import telebot
+import common
 
 LOG = logging.getLogger(__name__)
 
@@ -15,8 +15,7 @@ class FileHandler:
                                     msg_id INTEGER,
                                     file_type INTEGER
                            );"""
-    total_save_to_db_success = 0
-    total_save_to_chat_success = 0
+    success_count = 0
     pat_ugly_words = re.compile(r"\b(http|https|@)\b")
 
     def __init__(self, file_type, from_chat, to_chat, db_file):
@@ -28,6 +27,24 @@ class FileHandler:
         self.tb_name = self.get_tb_name_by_file_type()
         self.create_tb_if_not_exists()
 
+    def clear_tb_files(self):
+        conn = None
+        try:
+            LOG.info(f"开始清除数据库文件, table={self.tb_name}")
+            conn = self.get_db_conn()
+            cur = conn.cursor()
+            cur.execute(f"DELETE FROM {self.tb_name}")
+            cur.execute(f"DELETE FROM {self.tb_tg_chat_msg_id_name} WHERE chat_name = ? AND file_type = ?",
+                        (self.from_chat, self.file_type))
+            conn.commit()
+            LOG.info(f"{self.tb_name} 和 {self.tb_tg_chat_msg_id_name} 表中相关数据已清除")
+        except Exception as e:
+            self.db_err(e)
+            return
+        finally:
+            if conn:
+                conn.close()
+
     def test_tb_files(self, limit=100):
         LOG.info(f"开始测试数据库文件, table={self.tb_name}, limit={limit}")
         if common.CFG.use_proxy == "1":
@@ -36,9 +53,8 @@ class FileHandler:
         conn = None
         try:
             conn = self.get_db_conn()
-            rows = conn.cursor().execute(f"select file_id from {self.tb_name} ORDER BY random() limit {int(limit)}") \
+            rows = conn.cursor().execute(f"SELECT file_id FROM {self.tb_name} ORDER BY random() LIMIT {int(limit)}") \
                 .fetchall()
-            LOG.info(f"待测试条数: {len(rows)}")
             fail = 0
             bot.send_message(chat_id=common.CFG.user_id, text="#测试开始")
             for row in rows:
@@ -71,7 +87,7 @@ class FileHandler:
             cur.execute(self.get_create_sql())
             conn.commit()
             if not cur.execute(
-                    f"SELECT chat_name FROM {self.tb_tg_chat_msg_id_name} WHERE chat_name = ? and file_type = ?",
+                    f"SELECT chat_name FROM {self.tb_tg_chat_msg_id_name} WHERE chat_name = ? AND file_type = ?",
                     (self.from_chat, self.file_type)).fetchone():
                 cur.execute(f"INSERT INTO {self.tb_tg_chat_msg_id_name}(chat_name, msg_id, file_type) VALUES(?, ?, ?)",
                             (self.from_chat, -1, self.file_type))
@@ -89,7 +105,7 @@ class FileHandler:
         try:
             conn = self.get_db_conn()
             cur = conn.cursor()
-            row = cur.execute(f"SELECT msg_id FROM {self.tb_tg_chat_msg_id_name} WHERE chat_name = ? and file_type = ?",
+            row = cur.execute(f"SELECT msg_id FROM {self.tb_tg_chat_msg_id_name} WHERE chat_name = ? AND file_type = ?",
                               (self.from_chat, self.file_type)).fetchone()
             return row[0] if row else -1
         except Exception as e:
@@ -102,29 +118,22 @@ class FileHandler:
     async def batch_save_file_to_db(self, msg_list: list):
         LOG.info(f"开始保存记录到数据库, 即将保存条数: {len(msg_list)}")
         conn = None
-        i = 0
         try:
             conn = self.get_db_conn()
             max_id = -1
-            while i < len(msg_list):
-                msg = msg_list[i]
+            for msg in msg_list:
                 max_id = max(msg.id, max_id)
                 self.save_file_to_db(msg, conn.cursor())
                 conn.commit()
-                self.total_save_to_db_success += 1
-                i += 1
+                self.success_count += 1
             last_id = self.get_last_msg_id_from_db()
             if max_id > last_id:
                 conn.cursor().execute(
-                    f"UPDATE {self.tb_tg_chat_msg_id_name} SET msg_id = ? WHERE chat_name = ? and file_type = ?",
+                    f"UPDATE {self.tb_tg_chat_msg_id_name} SET msg_id = ? WHERE chat_name = ? AND file_type = ?",
                     (max_id, self.from_chat, self.file_type))
                 conn.commit()
-                LOG.info(f"上次最新消息 id 为: {last_id}, 现更新为: {max_id}")
-            LOG.info(f"成功保存记录到数据库, 已保存条数: {len(msg_list)}, 最大消息 id = {max_id}")
-            return []
         except Exception as e:
             self.db_err(e)
-            return msg_list[i:]
         finally:
             if conn:
                 conn.close()
@@ -137,7 +146,7 @@ class FileHandler:
 
     def save_file_to_db(self, msg, cur):
         file_id = self.get_file_id_from_msg(msg)
-        if not cur.execute(f"SELECT file_id FROM {self.tb_name} where file_id = ?", (file_id,)).fetchone():
+        if not cur.execute(f"SELECT file_id FROM {self.tb_name} WHERE file_id = ?", (file_id,)).fetchone():
             cur.execute(f"INSERT INTO {self.tb_name}(file_id, content) VALUES(?, ?)",
                         (file_id, self.filter_ugly_content(str(self.get_file_content_from_msg(msg)))))
 
@@ -233,8 +242,8 @@ class SgpVideoHandler(VideoHandler):
         ids = SgpVideoHandler.AV_PAT.findall(title.lower())
         if not ids or len(ids) == 0:
             return
-        c1 = cur.execute(f"SELECT file_id FROM {self.tb_name} where file_id = ?", (file_id,)).fetchone()
-        c2 = cur.execute(f"SELECT av_id FROM {self.tb_name} where av_id = ?", (ids[0],)).fetchone()
+        c1 = cur.execute(f"SELECT file_id FROM {self.tb_name} WHERE file_id = ?", (file_id,)).fetchone()
+        c2 = cur.execute(f"SELECT av_id FROM {self.tb_name} WHERE av_id = ?", (ids[0],)).fetchone()
         if not c1 and not c2:
             cur.execute(f"INSERT INTO {self.tb_name}(av_id, title, file_id) VALUES(?, ?, ?)",
                         (ids[0], title, file_id))
