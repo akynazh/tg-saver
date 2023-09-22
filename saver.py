@@ -127,7 +127,7 @@ class Saver:
 
     def check_if_has_new_msg(self, msg, old_cur_id):
         # 没有更新的消息
-        if old_cur_id > msg.id:
+        if old_cur_id >= msg.id:
             LOG.info(f"没有更新的消息: {old_cur_id} >= {msg.id}")
             return False
         return True
@@ -149,8 +149,7 @@ class Saver:
             self.app = app
             async for msg in app.get_chat_history(self.from_chat, limit=self.limit):
                 if not self.check_if_has_new_msg(msg, old_cur_id):
-                    async with self.lock:
-                        has_update = False
+                    has_update = False
                     break
                 if not self.filter_file_by_type(msg):
                     continue
