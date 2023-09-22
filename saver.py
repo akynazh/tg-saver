@@ -149,7 +149,8 @@ class Saver:
             self.app = app
             async for msg in app.get_chat_history(self.from_chat, limit=self.limit):
                 if not self.check_if_has_new_msg(msg, old_cur_id):
-                    has_update = False
+                    async with self.lock:
+                        has_update = False
                     break
                 if not self.filter_file_by_type(msg):
                     continue
