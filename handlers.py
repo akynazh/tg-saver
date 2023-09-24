@@ -56,7 +56,7 @@ class FileHandler:
             rows = conn.cursor().execute(f"SELECT file_id FROM {self.tb_name} ORDER BY random() LIMIT {int(limit)}") \
                 .fetchall()
             fail = 0
-            bot.send_message(chat_id=common.CFG.user_id, text="#测试开始")
+            bot.send_message(chat_id=common.CFG.test_id, text=f"#测试开始, 测试数: {limit}")
             for row in rows:
                 LOG.info(f"发送: {row[0]}")
                 try:
@@ -64,7 +64,12 @@ class FileHandler:
                 except Exception as e:
                     LOG.error(f"发送失败: {e}")
                     fail += 1
-            LOG.info(f"测试完成, 失败数: {fail}")
+            LOG.info(f"测试完成, 测试数: {limit}, 失败数: {fail}")
+            if fail != 0:
+                bot.send_message(chat_id=common.CFG.test_id, text=f"#测试失败, 测试数: {limit}, 失败数: {fail}")
+                bot.send_message(chat_id=common.CFG.admin_id, text=f"#测试: 测试失败, 测试数: {limit}, 失败数: {fail}")
+            else:
+                bot.send_message(chat_id=common.CFG.test_id, text=f"#测试成功, 测试数: {limit}")
         except Exception as e:
             self.db_err(e)
             return
@@ -185,7 +190,7 @@ class VideoHandler(FileHandler):
         await app.send_video(chat_id=self.to_chat, video=self.get_file_id_from_msg(msg))
 
     def test_send_file_to_chat(self, bot, file_id):
-        bot.send_video(chat_id=common.CFG.user_id, video=file_id)
+        bot.send_video(chat_id=common.CFG.test_id, video=file_id)
 
 
 class PhotoHandler(FileHandler):
@@ -202,7 +207,7 @@ class PhotoHandler(FileHandler):
         await app.send_photo(chat_id=self.to_chat, photo=self.get_file_id_from_msg(msg))
 
     def test_send_file_to_chat(self, bot, file_id):
-        bot.send_photo(chat_id=common.CFG.user_id, photo=file_id)
+        bot.send_photo(chat_id=common.CFG.test_id, photo=file_id)
 
 
 class DocumentHandler(FileHandler):
@@ -219,7 +224,7 @@ class DocumentHandler(FileHandler):
         await app.send_document(chat_id=self.to_chat, document=self.get_file_id_from_msg(msg))
 
     def test_send_file_to_chat(self, bot, file_id):
-        bot.send_document(chat_id=common.CFG.user_id, document=file_id)
+        bot.send_document(chat_id=common.CFG.test_id, document=file_id)
 
 
 class CustomHandlerType:

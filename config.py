@@ -18,7 +18,8 @@ class Config:
             self.hostname = config["hostname"]
             self.port = int(config["port"])
             self.token = config["token"]
-            self.user_id = config["user_id"]
+            self.admin_id = config["admin_id"]
+            self.test_id = config["test_id"]
             if not self.api_id or not self.api_hash or not self.db_file:
                 LOG.error(f"读取配置文件出错: 缺失参数")
                 raise AttributeError
