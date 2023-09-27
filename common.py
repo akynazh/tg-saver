@@ -8,6 +8,7 @@ if not os.path.exists(PATH_ROOT):
     os.mkdir(PATH_ROOT)
 CFG = Config(path_config_file=f"{PATH_ROOT}/config.yaml")
 SESSION_FILE = f"{PATH_ROOT}/session"
+SUMMARY_FILE = f"{PATH_ROOT}/summary.txt"
 
 
 class FileType:

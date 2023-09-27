@@ -62,6 +62,45 @@ class Saver:
         self.file_type_tag = common.FileType.FILE_TAG_MAP[self.file_type]
         self.handler = FileHandlerFactory(self.file_type, self.from_chat, self.to_chat, self.db_file,
                                           self.c_type).get_handler()
+        self.summary = ""
+
+    def log_start(self):
+        start_msg = f"""
+        
+##################### TG-SAVER-START #####################
+$ {self.from_chat} -> {self.to_chat}
+$ 是否需要保存文件到 chat: {self.need_save_to_chat}
+$ 是否需要保存文件到数据库: {self.need_save_to_db}
+$ 文件类型 [FileType]: {self.handler.name}
+$ session 文件地址: {self.session_file}
+$ tg api id: {self.api_id}
+$ tg api hash: {self.api_hash}
+$ sqlite3 数据库文件: {self.db_file}
+$ 完成后是否需要测试: {self.need_test}
+$ 是否只测试: {self.test_only}
+$ 最大测试条数: {self.max_test_count}
+$ 是否重新获取(忽略上次获取到的最新消息 id): {self.renew}
+$ 代理 dict: {self.proxies}
+$ 消息限制数, 默认 0 即不限制: {self.limit}
+$ 自定义 handler 的类型 [CustomHandlerType], 默认为 0, 不进行自定义: {self.handler.name}
+$ 最大等待时间, 默认 30s: {self.max_wait_time}s
+##################### TG-SAVER-START #####################
+"""
+        LOG.info(start_msg)
+        self.summary += start_msg
+
+    def log_end(self):
+        end_msg = f"""
+
+##################### TG-SAVER-END #####################
+目标文件总数: {self.total}
+成功保存总数: {self.handler.success_count}
+##################### TG-SAVER-END #####################
+"""
+        LOG.info(end_msg)
+        self.summary += end_msg
+        with open(common.SUMMARY_FILE, "w") as f:
+            f.write(self.summary)
 
     async def run_save_file_to_chat_tasks(self):
         LOG.info(f"开始保存文件到 chat, 任务数: {len(self.tasks)}, 发送中......")
@@ -103,6 +142,7 @@ class Saver:
 
     async def save_file_to_db(self):
         await self.handler.batch_save_file_to_db(self.success_msg_list)
+        self.success_msg_list = []
 
     async def try_to_save_to_chat(self, msg=None, is_last=False):
         if self.need_save_to_chat:
@@ -136,6 +176,7 @@ class Saver:
         self.handler.test_tb_files(self.max_test_count)
 
     async def save(self):
+        self.log_start()
         if self.test_only:
             self.test()
             return
@@ -160,7 +201,7 @@ class Saver:
             if has_update:
                 await self.try_to_save_to_chat(is_last=True)
                 await self.try_to_save_to_db(is_last=True)
-        LOG.info(f"$ 目标文件总数: {self.total}, 成功保存总数: {self.handler.success_count}")
+        self.log_end()
         if self.need_test:
             self.test()
 

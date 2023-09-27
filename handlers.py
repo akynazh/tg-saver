@@ -9,6 +9,7 @@ LOG = logging.getLogger(__name__)
 
 
 class FileHandler:
+    name = "File"
     tb_tg_chat_msg_id_name = "t_tg_chat_msg_id"
     tb_tg_chat_msg_id_sql = f"""CREATE TABLE IF NOT EXISTS {tb_tg_chat_msg_id_name} (
                                     chat_name TEXT,
@@ -46,7 +47,6 @@ class FileHandler:
                 conn.close()
 
     def test_tb_files(self, limit=100):
-        LOG.info(f"开始测试数据库文件, table={self.tb_name}, limit={limit}")
         if common.CFG.use_proxy == "1":
             telebot.apihelper.proxy = common.CFG.proxy_json
         bot = telebot.TeleBot(token=common.CFG.token)
@@ -56,7 +56,9 @@ class FileHandler:
             rows = conn.cursor().execute(f"SELECT file_id FROM {self.tb_name} ORDER BY random() LIMIT {int(limit)}") \
                 .fetchall()
             fail = 0
-            bot.send_message(chat_id=common.CFG.test_id, text=f"#测试开始, 测试数: {limit}")
+            start_msg = f"#测试# 开始测试, 测试目标={self.tb_name}, 测试数={limit}"
+            LOG.info(start_msg)
+            bot.send_message(chat_id=common.CFG.test_id, text=start_msg)
             for row in rows:
                 LOG.info(f"发送: {row[0]}")
                 try:
@@ -64,13 +66,13 @@ class FileHandler:
                 except Exception as e:
                     LOG.error(f"发送失败: {e}")
                     fail += 1
-            LOG.info(f"测试完成, 测试数: {limit}, 失败数: {fail}")
+            end_msg = f"#测试# 测试完成, 测试数={limit}, 失败数={fail}"
+            LOG.info(end_msg)
             if fail != 0:
-                bot.send_message(chat_id=common.CFG.test_id, text=f"#测试失败, 测试数: {limit}, 失败数: {fail}")
-                bot.send_message(chat_id=common.CFG.admin_id, text=f"#测试: 测试失败, 测试数: {limit}, 失败数: {fail}")
-            else:
-                bot.send_message(chat_id=common.CFG.test_id, text=f"#测试成功, 测试数: {limit}")
+                bot.send_message(chat_id=common.CFG.admin_id, text=end_msg)
+            bot.send_message(chat_id=common.CFG.test_id, text=end_msg)
         except Exception as e:
+            bot.send_message(chat_id=common.CFG.admin_id, text=f"#测试# 测试失败, 数据库异常, 请检查!")
             self.db_err(e)
             return
         finally:
@@ -177,6 +179,8 @@ class FileHandler:
 
 
 class VideoHandler(FileHandler):
+    name = "Video"
+
     def get_tb_name_by_file_type(self):
         return f"t_tg_v_{self.from_chat}"
 
@@ -194,6 +198,8 @@ class VideoHandler(FileHandler):
 
 
 class PhotoHandler(FileHandler):
+    name = "Photo"
+
     def get_tb_name_by_file_type(self):
         return f"t_tg_p_{self.from_chat}"
 
@@ -211,6 +217,8 @@ class PhotoHandler(FileHandler):
 
 
 class DocumentHandler(FileHandler):
+    name = "Document"
+
     def get_tb_name_by_file_type(self):
         return f"t_tg_d_{self.from_chat}"
 
@@ -232,6 +240,7 @@ class CustomHandlerType:
 
 
 class SgpVideoHandler(VideoHandler):
+    name = "SgpVideo"
     AV_PAT = re.compile(r"[a-z0-9]+[-_](?:ppv-)?[a-z0-9]+")
 
     def get_create_sql(self):
