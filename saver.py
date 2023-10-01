@@ -31,7 +31,7 @@ except ImportError:
 
 
 class Saver:
-    UGLY_WORDS = ["@", "http", "https"]
+    UGLY_WORDS = ["@", "http", "https", "群", "赌", "搜", "网址"]
 
     def __init__(self,
                  from_chat: str,
