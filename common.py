@@ -4,19 +4,16 @@ from logging.handlers import RotatingFileHandler
 from config import Config
 
 PATH_ROOT = f'{os.path.expanduser("~")}/.tg_saver'
-if not os.path.exists(PATH_ROOT):
-    os.mkdir(PATH_ROOT)
 CFG = Config(path_config_file=f"{PATH_ROOT}/config.yaml")
 SESSION_FILE = f"{PATH_ROOT}/session"
-SUMMARY_FILE = f"{PATH_ROOT}/summary.txt"
 
 
-class FileType:
+class FileTypes:
     VIDEO = 1
     PHOTO = 2
     DOCUMENT = 3
 
-    FILE_TAG_MAP = {
+    TAG_MAP = {
         VIDEO: "MessageMediaType.VIDEO",
         PHOTO: "MessageMediaType.PHOTO",
         DOCUMENT: "MessageMediaType.DOCUMENT",
