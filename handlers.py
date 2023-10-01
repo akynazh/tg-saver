@@ -1,10 +1,6 @@
 import sqlite3
 
-import telebot
 from pyrogram.types import Message
-import common
-
-telebot.apihelper.proxy = common.CFG.proxy_json
 
 
 class FileHandler:

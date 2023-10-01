@@ -19,6 +19,8 @@ class Config:
             LOG.error(f"读取配置文件出错: 缺失参数")
             raise AttributeError
 
+        self.proxy_addr = ""
+        self.proxy_json = {}
         self.proxy_pyrogram_json = {}
         if self.use_proxy == "1":
             if not self.scheme or not self.hostname or not self.port:
