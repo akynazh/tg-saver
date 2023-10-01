@@ -31,7 +31,7 @@ except ImportError:
 
 
 class Saver:
-    PAT_UGLY_WORDS = re.compile(r"\b(http|https|@)\b")
+    UGLY_WORDS = ["@", "http", "https"]
 
     def __init__(self,
                  from_chat: str,
@@ -85,7 +85,8 @@ class Saver:
             and self.check_if_is_target_file_type(msg)
 
     def check_if_content_is_ok(self, msg) -> bool:
-        return True if not self.PAT_UGLY_WORDS.findall(self.handler.get_file_content_from_msg(msg)) else False
+        l_content = self.handler.get_file_content_from_msg(msg).lower()
+        return True if not any(word in l_content for word in self.UGLY_WORDS) else False
 
     def check_if_is_target_file_type(self, msg) -> bool:
         return True if msg.media and str(msg.media) == self.file_type_tag else False
