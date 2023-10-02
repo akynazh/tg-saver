@@ -1,4 +1,6 @@
 import sqlite3
+import time
+
 import meilisearch
 import common
 from pyrogram.types import Message
@@ -67,10 +69,6 @@ class FileHandler:
     def save_file_to_ms(self, file_id, content):
         doc = {"id": file_id, "content": content}
         self.ms.index(self.to_chat).add_documents([doc])
-
-    def batch_save_file_to_ms(self):
-        data = self.conn.cursor().execute(f"SELECT file_id, content FROM {self.tb_name}").fetchall()
-        return self.ms.index(self.to_chat).add_documents([{"id": item[0], "content": item[1]} for item in data])
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass
