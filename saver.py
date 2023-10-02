@@ -57,7 +57,7 @@ class Saver:
 
         self.success_count = 0
         self.fail_count = 0
-        self.max_fail_count = int(self.limit / 2)
+        self.max_fail_count = int(self.limit / 5)
         self.file_type_tag = common.FileTypes.TAG_MAP[file_type]
         handler_args = [file_type, from_chat, to_chat]
         self.handler = HANDLERS_MAP[file_type](*handler_args) if c_type == 0 \
