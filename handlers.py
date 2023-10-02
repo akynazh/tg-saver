@@ -68,7 +68,7 @@ class FileHandler:
         doc = {"id": file_id, "content": content}
         self.ms.index(self.to_chat).add_documents([doc])
 
-    def batch_sync_file_to_ms(self):
+    def batch_save_file_to_ms(self):
         data = self.conn.cursor().execute(f"SELECT file_id, content FROM {self.tb_name}").fetchall()
         return self.ms.index(self.to_chat).add_documents([{"id": item[0], "content": item[1]} for item in data])
 

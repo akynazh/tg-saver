@@ -82,7 +82,7 @@ class Saver:
         return True if not msg.reply_markup else False
 
     def sync(self):
-        task_info = self.handler.batch_sync_file_to_ms()
+        task_info = self.handler.batch_save_file_to_ms()
         LOG.info(f"同步到 meilisearch 完成: {task_info}")
 
     async def save(self):
