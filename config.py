@@ -11,6 +11,8 @@ class Config:
         self.api_id = int(config["api_id"])
         self.api_hash = config["api_hash"]
         self.db_file = config["db_file"]
+        self.ms_addr = config["ms_addr"]
+        self.ms_key = config["ms_key"]
         self.use_proxy = config["use_proxy"] if config["use_proxy"] else "0"
         self.scheme = config["scheme"]
         self.hostname = config["hostname"]

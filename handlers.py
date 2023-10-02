@@ -1,5 +1,6 @@
 import sqlite3
-
+import meilisearch
+import common
 from pyrogram.types import Message
 
 
@@ -7,13 +8,12 @@ class FileHandler:
     APP = None
     C_TYPE = 0
 
-    def __init__(self, file_type, from_chat, to_chat, db_file):
+    def __init__(self, file_type, from_chat, to_chat):
         self.file_type = file_type
         self.from_chat = from_chat
         self.to_chat = to_chat
-        self.db_file = db_file
         self.tb_name = f"t_tg_{self.to_chat}"
-        self.conn = sqlite3.connect(self.db_file)
+        self.conn = sqlite3.connect(common.CFG.db_file)
         self.init_last_msg_id()
 
     def init_last_msg_id(self):
@@ -47,8 +47,10 @@ class FileHandler:
         pass
 
     async def save_file(self, msg):
-        new_msg = await self.save_file_to_chat(self.get_file_id_from_msg(msg), self.get_file_content_from_msg(msg))
+        content = self.get_file_content_from_msg(msg)
+        new_msg = await self.save_file_to_chat(self.get_file_id_from_msg(msg), content)
         self.save_file_to_db(new_msg, msg.id)
+        self.save_file_to_ms(self.get_file_id_from_msg(new_msg), content)
 
     def save_file_to_db(self, msg, ori_msg_id):
         file_id = self.get_file_id_from_msg(msg)
@@ -57,6 +59,11 @@ class FileHandler:
                         VALUES(?, ?, ?, ?, ?, ?)""",
                                    (msg.id, file_id, self.file_type, content, self.from_chat, ori_msg_id))
         self.conn.commit()
+
+    def save_file_to_ms(self, file_id, content):
+        doc = {"id": file_id, "content": content}
+        client = meilisearch.Client(common.CFG.ms_addr, common.CFG.ms_key)
+        client.index(self.to_chat).add_documents([doc])
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass

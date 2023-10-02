@@ -4,8 +4,8 @@ from logging.handlers import RotatingFileHandler
 from config import Config
 
 PATH_ROOT = f'{os.path.expanduser("~")}/.tg_saver'
-CFG = Config(path_config_file=f"{PATH_ROOT}/config.yaml")
 SESSION_FILE = f"{PATH_ROOT}/session"
+CFG = Config(path_config_file=f"{PATH_ROOT}/config.yaml")
 
 
 class FileTypes:

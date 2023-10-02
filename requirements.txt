@@ -4,3 +4,5 @@ Pyrogram==2.0.92
 pyTelegramBotAPI==4.13.0
 PyYAML==6.0.1
 TgCrypto
+argparse~=1.4.0
+meilisearch~=0.28.2

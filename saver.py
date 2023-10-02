@@ -1,4 +1,3 @@
-import re
 import sys
 
 import asyncio
@@ -37,11 +36,6 @@ class Saver:
                  from_chat: str,
                  to_chat: str,
                  file_type: int,
-                 session_file: str,
-                 api_id: int,
-                 api_hash: str,
-                 db_file: str,
-                 proxies=None,
                  limit=0,
                  c_type=0,
                  renew=False):
@@ -50,11 +44,6 @@ class Saver:
         :param from_chat: 抓取文件的目标 chat 的带 @ 名称
         :param to_chat: 文件保存的目标 chat 的带 @ 名称
         :param file_type: 文件类型 [FileTypes]
-        :param session_file: session 文件地址
-        :param api_id: tg api id
-        :param api_hash: tg api hash
-        :param db_file: sqlite3 数据库文件
-        :param proxies: 代理 dict
         :param limit: 消息限制数, 默认 0 即不限制
         :param c_type: 自定义 handler 的类型, 默认为 0, 不进行自定义
         :param renew: 尝试获取最新消息, 默认为 False
@@ -62,11 +51,6 @@ class Saver:
         self.from_chat = from_chat
         self.to_chat = to_chat
         self.file_type = file_type
-        self.session_file = session_file
-        self.api_id = api_id
-        self.api_hash = api_hash
-        self.db_file = db_file
-        self.proxies = proxies
         self.limit = limit
         self.c_type = c_type
         self.renew = renew
@@ -75,7 +59,7 @@ class Saver:
         self.fail_count = 0
         self.max_fail_count = int(self.limit / 2)
         self.file_type_tag = common.FileTypes.TAG_MAP[file_type]
-        handler_args = [file_type, from_chat, to_chat, db_file]
+        handler_args = [file_type, from_chat, to_chat]
         self.handler = HANDLERS_MAP[file_type](*handler_args) if c_type == 0 \
             else HANDLERS_MAP[c_type](*handler_args)
 
@@ -95,7 +79,8 @@ class Saver:
         return True if not msg.reply_markup else False
 
     async def save(self):
-        async with Client(self.session_file, self.api_id, self.api_hash, proxy=self.proxies,
+        async with Client(common.SESSION_FILE, common.CFG.api_id, common.CFG.api_hash,
+                          proxy=common.CFG.proxy_pyrogram_json,
                           parse_mode=enums.ParseMode.DISABLED) as app:
             self.handler.APP = app
             lock = asyncio.Lock()
@@ -140,11 +125,6 @@ def main():
         from_chat=args.from_chat,
         to_chat=args.to_chat,
         file_type=args.file_type,
-        session_file=common.SESSION_FILE,
-        api_id=common.CFG.api_id,
-        api_hash=common.CFG.api_hash,
-        db_file=common.CFG.db_file,
-        proxies=common.CFG.proxy_pyrogram_json,
         limit=args.limit,
         c_type=args.c_type,
         renew=args.renew,
