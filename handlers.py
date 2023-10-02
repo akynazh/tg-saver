@@ -8,10 +8,12 @@ class FileHandler:
     APP = None
     C_TYPE = 0
 
-    def __init__(self, file_type, from_chat, to_chat):
+    def __init__(self, file_type, from_chat, to_chat, enable_ms):
         self.file_type = file_type
         self.from_chat = from_chat
         self.to_chat = to_chat
+        self.enable_ms = enable_ms
+
         self.tb_name = f"t_tg_{self.to_chat}"
         self.conn = sqlite3.connect(common.CFG.db_file)
         self.ms = meilisearch.Client(common.CFG.ms_addr, common.CFG.ms_key)
@@ -51,7 +53,8 @@ class FileHandler:
         content = self.get_file_content_from_msg(msg)
         new_msg = await self.save_file_to_chat(self.get_file_id_from_msg(msg), content)
         self.save_file_to_db(new_msg, msg.id)
-        self.save_file_to_ms(self.get_file_id_from_msg(new_msg), content)
+        if self.enable_ms:
+            self.save_file_to_ms(self.get_file_id_from_msg(new_msg), content)
 
     def save_file_to_db(self, msg, ori_msg_id):
         file_id = self.get_file_id_from_msg(msg)
@@ -64,6 +67,10 @@ class FileHandler:
     def save_file_to_ms(self, file_id, content):
         doc = {"id": file_id, "content": content}
         self.ms.index(self.to_chat).add_documents([doc])
+
+    def batch_sync_file_to_ms(self):
+        data = self.conn.cursor().execute(f"SELECT file_id, content FROM {self.tb_name}").fetchall()
+        return self.ms.index(self.to_chat).add_documents([{"id": item[0], "content": item[1]} for item in data])
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass
