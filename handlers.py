@@ -14,6 +14,7 @@ class FileHandler:
         self.to_chat = to_chat
         self.tb_name = f"t_tg_{self.to_chat}"
         self.conn = sqlite3.connect(common.CFG.db_file)
+        self.ms = meilisearch.Client(common.CFG.ms_addr, common.CFG.ms_key)
         self.init_last_msg_id()
 
     def init_last_msg_id(self):
@@ -62,8 +63,7 @@ class FileHandler:
 
     def save_file_to_ms(self, file_id, content):
         doc = {"id": file_id, "content": content}
-        client = meilisearch.Client(common.CFG.ms_addr, common.CFG.ms_key)
-        client.index(self.to_chat).add_documents([doc])
+        self.ms.index(self.to_chat).add_documents([doc])
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass
