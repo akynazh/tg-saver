@@ -2,7 +2,7 @@ import re
 from handlers import VideoHandler
 
 
-class SgpVideoHandler(VideoHandler):
+class JavHandler(VideoHandler):
     C_TYPE = 101
     AV_PAT = re.compile(r"[a-z0-9]+[-_](?:ppv-)?[a-z0-9]+")
 
