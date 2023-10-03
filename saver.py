@@ -30,7 +30,6 @@ except ImportError:
 
 
 class Saver:
-    UGLY_WORDS = ["@", "http", "https", "群", "赌", "搜", "网址"]
 
     def __init__(self,
                  from_chat: str,
@@ -68,12 +67,8 @@ class Saver:
 
     def check_if_file_is_ok(self, msg) -> bool:
         return self.check_if_has_no_markup(msg) \
-            and self.check_if_content_is_ok(msg) \
+            and self.handler.check_if_content_is_ok(msg) \
             and self.check_if_is_target_file_type(msg)
-
-    def check_if_content_is_ok(self, msg) -> bool:
-        l_content = self.handler.get_file_content_from_msg(msg).lower()
-        return True if not any(word in l_content for word in self.UGLY_WORDS) else False
 
     def check_if_is_target_file_type(self, msg) -> bool:
         return True if msg.media and str(msg.media) == self.file_type_tag else False

@@ -9,6 +9,7 @@ from pyrogram.types import Message
 class FileHandler:
     APP = None
     C_TYPE = 0
+    UGLY_WORDS = ["@", "http", "https", "群", "赌", "搜", "网址"]
 
     def __init__(self, file_type, from_chat, to_chat, enable_ms):
         self.file_type = file_type
@@ -72,6 +73,10 @@ class FileHandler:
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass
+
+    def check_if_content_is_ok(self, msg) -> bool:
+        l_content = self.get_file_content_from_msg(msg).lower()
+        return True if not any(word in l_content for word in self.UGLY_WORDS) else False
 
 
 class VideoHandler(FileHandler):
