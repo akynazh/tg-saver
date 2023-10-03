@@ -65,16 +65,8 @@ class Saver:
         self.handler = HANDLERS_MAP[file_type](*handler_args) if c_type == 0 \
             else HANDLERS_MAP[c_type](*handler_args)
 
-    def check_if_file_is_ok(self, msg) -> bool:
-        return self.check_if_has_no_markup(msg) \
-            and self.handler.check_if_content_is_ok(msg) \
-            and self.check_if_is_target_file_type(msg)
-
     def check_if_is_target_file_type(self, msg) -> bool:
         return True if msg.media and str(msg.media) == self.file_type_tag else False
-
-    def check_if_has_no_markup(self, msg):
-        return True if not msg.reply_markup else False
 
     async def save(self):
         async with Client(common.SESSION_FILE, common.CFG.api_id, common.CFG.api_hash,
@@ -93,7 +85,7 @@ class Saver:
                     cur_max_msg_id = max(cur_max_msg_id, msg.id)
                 if self.renew and last_max_msg_id >= msg.id:
                     break
-                if self.check_if_file_is_ok(msg):
+                if self.check_if_is_target_file_type(msg) and self.handler.check_if_file_is_ok(msg):
                     try:
                         await self.handler.save_file(msg)
                         LOG.info(f"保存成功: {msg.id}")

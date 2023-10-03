@@ -1,5 +1,4 @@
 import sqlite3
-import time
 
 import meilisearch
 import common
@@ -73,6 +72,13 @@ class FileHandler:
 
     async def save_file_to_chat(self, file_id, content) -> Message:
         pass
+
+    def check_if_file_is_ok(self, msg) -> bool:
+        return self.check_if_has_no_markup(msg) \
+            and self.check_if_content_is_ok(msg)
+
+    def check_if_has_no_markup(self, msg):
+        return True if not msg.reply_markup else False
 
     def check_if_content_is_ok(self, msg) -> bool:
         l_content = self.get_file_content_from_msg(msg).lower()

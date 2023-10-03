@@ -1,6 +1,5 @@
 import re
 from handlers import VideoHandler
-from pyrogram.types import Message
 
 
 class JavHandler(VideoHandler):
@@ -17,8 +16,5 @@ class JavHandler(VideoHandler):
         self.conn.commit()
 
     def check_if_content_is_ok(self, msg) -> bool:
-        return self.AV_PAT.findall(self.get_file_content_from_msg(msg).lower()) != []
-
-    async def save_file_to_chat(self, file_id, content) -> Message:
-        return await self.APP.send_video(chat_id=self.to_chat, video=file_id,
-                                         caption=self.AV_PAT.findall(content.lower())[0])
+        return super().check_if_content_is_ok(msg) and self.AV_PAT.findall(
+            self.get_file_content_from_msg(msg).lower()) != []
