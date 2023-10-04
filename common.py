@@ -9,14 +9,18 @@ CFG = Config(path_config_file=f"{PATH_ROOT}/config.yaml")
 
 
 class FileTypes:
+    MEDIA_GROUP = 0
     VIDEO = 1
     PHOTO = 2
     DOCUMENT = 3
+    AUDIO = 4
 
     TAG_MAP = {
+        MEDIA_GROUP: "MEDIA_GROUP",
         VIDEO: "MessageMediaType.VIDEO",
         PHOTO: "MessageMediaType.PHOTO",
         DOCUMENT: "MessageMediaType.DOCUMENT",
+        AUDIO: "MessageMediaType.AUDIO"
     }
 
 

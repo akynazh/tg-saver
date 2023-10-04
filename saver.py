@@ -4,7 +4,7 @@ import asyncio
 import argparse
 from pyrogram import Client, enums
 import common
-import handlers
+from handler import HandlersMap
 
 
 def all_subclasses(cls):
@@ -13,20 +13,6 @@ def all_subclasses(cls):
 
 
 LOG = common.Logger(path_log_file=f"{common.PATH_ROOT}/log.txt").logger
-
-HANDLERS_MAP = {
-    common.FileTypes.VIDEO: handlers.VideoHandler,
-    common.FileTypes.PHOTO: handlers.PhotoHandler,
-    common.FileTypes.DOCUMENT: handlers.DocumentHandler,
-}
-try:
-    import handlers_c
-
-    for handler in all_subclasses(handlers.FileHandler):
-        if handler.C_TYPE != 0:
-            HANDLERS_MAP[handler.C_TYPE] = handler
-except ImportError:
-    pass
 
 
 class Saver:
@@ -62,11 +48,15 @@ class Saver:
         self.max_fail_count = int(self.limit / 5)
         self.file_type_tag = common.FileTypes.TAG_MAP[file_type]
         handler_args = [file_type, from_chat, to_chat, enable_ms]
-        self.handler = HANDLERS_MAP[file_type](*handler_args) if c_type == 0 \
-            else HANDLERS_MAP[c_type](*handler_args)
+        self.handler = HandlersMap[file_type](*handler_args) if c_type == 0 \
+            else HandlersMap[c_type](*handler_args)
 
     def check_if_is_target_file_type(self, msg) -> bool:
-        return True if msg.media and str(msg.media) == self.file_type_tag else False
+        if msg.media and str(msg.media) == self.file_type_tag:
+            return True
+        elif msg.media_group_id and self.file_type == common.FileTypes.MEDIA_GROUP:
+            return True
+        return False
 
     async def save(self):
         async with Client(common.SESSION_FILE, common.CFG.api_id, common.CFG.api_hash,
