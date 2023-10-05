@@ -161,9 +161,11 @@ class MediaGroupHandler(FileHandler):
                                     self.get_file_type(old_msg), self.from_chat, old_msg.id))
         content = old_msg.caption
         if content:
-            self.conn.cursor().execute(
-                f"""INSERT INTO {self.tb_name}_i(id, media_group_id, ori_chat_name, content) VALUES (?, ?, ?, ?)""",
-                (self.gen_id_from_content(content), old_msg.media_group_id, self.from_chat, content))
+            i_id = self.gen_id_from_content(content)
+            if not self.conn.cursor().execute(f"""SELECT id FROM {self.tb_name}_i WHERE id = ?""", (i_id,)).fetchone():
+                self.conn.cursor().execute(
+                    f"""INSERT INTO {self.tb_name}_i(id, media_group_id, ori_chat_name, content) VALUES (?, ?, ?, ?)""",
+                    (i_id, old_msg.media_group_id, self.from_chat, content))
         self.conn.commit()
 
     def gen_id_from_content(self, content) -> str:
