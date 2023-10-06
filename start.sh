@@ -14,3 +14,5 @@ python3 ~/Codes/tg-saver/saver.py -fc Zhangzhoulao666 -tc zh_jav_channel_1 -ft 0
 #   python3 ~/Codes/tg-saver/saver.py -fc DoO_o -tc zh_coav_channel_1 -ft 1 -lm 25 &&
 #   echo "# 第 $i 次入睡 =_= #" &&
 #   sleep 60; done
+
+python3 ~/Codes/tg-saver/stat.py
