@@ -13,4 +13,4 @@ select count(*) from t_tg_{chat_name};
 
 get_count("zh_coav_channel_1")
 get_count("zh_sgp_av_channel_1")
-get_count("zh_jav_channel_1")
+get_count("zh_jav_channel_1_i")
