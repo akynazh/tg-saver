@@ -32,3 +32,4 @@ class Config:
             self.proxy_json = {"http": self.proxy_addr, "https": self.proxy_addr}
             self.proxy_pyrogram_json = {"scheme": self.scheme, "hostname": self.hostname, "port": self.port}
             LOG.info(f'设置代理: "{self.proxy_addr}"')
+        LOG.info("成功读取并加载配置")

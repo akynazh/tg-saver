@@ -1,11 +1,11 @@
 import sqlite3
 import time
-
+import logging
 import meilisearch
 import common
 from pyrogram.types import Message
 
-LOG = common.Logger(path_log_file=f"{common.PATH_ROOT}/log.txt").logger
+LOG = logging.getLogger(__name__)
 
 
 class FileHandler:
