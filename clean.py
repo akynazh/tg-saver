@@ -8,5 +8,5 @@ delete from t_tg_zh_coav_channel_1 where content = '-';
 res = conn.cursor().execute("""
 select changes();
 """).fetchone()
-print(res[0])
+print(f"clean t_tg_zh_coav_channel_1: {res[0]}")
 conn.commit()
