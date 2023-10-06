@@ -1,12 +1,15 @@
 import sqlite3
 import common
 
-conn = sqlite3.connect(common.CFG.db_file)
-conn.cursor().execute("""
+LOG = common.Logger(path_log_file=f"{common.PATH_ROOT}/log.txt").logger
+CONN = sqlite3.connect(common.CFG.db_file)
+
+CONN.cursor().execute("""
 delete from t_tg_zh_coav_channel_1 where content = '-';
 """)
-res = conn.cursor().execute("""
+res = CONN.cursor().execute("""
 select changes();
 """).fetchone()
-print(f"clean t_tg_zh_coav_channel_1: {res[0]}")
-conn.commit()
+CONN.commit()
+
+LOG.info(f"clean t_tg_zh_coav_channel_1: {res[0]}")
