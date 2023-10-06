@@ -8,7 +8,7 @@ import common
 CLI = meilisearch.Client(common.CFG.ms_addr, common.CFG.ms_key)
 
 
-def trans(chat_name):
+def trans_to_ms(chat_name):
     print(f"Transfer {chat_name}...")
     data = sqlite3.connect(common.CFG.db_file).cursor().execute(
         f"SELECT file_id, content FROM t_tg_{chat_name}").fetchall()
@@ -19,4 +19,4 @@ def trans(chat_name):
 
 
 if __name__ == '__main__':
-    trans(sys.argv[1])
+    trans_to_ms(sys.argv[1])

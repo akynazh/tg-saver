@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-python3 ~/Codes/tg-saver/clean.py
+python3 ~/Codes/tg-saver/utils/clean.py
 
 python3 ~/Codes/tg-saver/saver.py -fc DoO_o -tc zh_coav_channel_1 -ft 1 -lm 100
 sleep 60
@@ -15,4 +15,4 @@ python3 ~/Codes/tg-saver/saver.py -fc Zhangzhoulao666 -tc zh_jav_channel_1 -ft 0
 #   echo "# 第 $i 次入睡 =_= #" &&
 #   sleep 60; done
 
-python3 ~/Codes/tg-saver/stat.py
+python3 ~/Codes/tg-saver/utils/stat.py

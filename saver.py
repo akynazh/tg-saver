@@ -85,11 +85,15 @@ class Saver:
                         LOG.error(f"保存失败: {msg.id}, {e}")
                         self.fail_count += 1
                         if self.fail_count >= self.max_fail_count:
-                            LOG.error(f"任务失败: 保存失败数超过 {self.max_fail_count}, 直接退出")
+                            fail_msg = f"任务失败: 保存失败数超过 {self.max_fail_count}, 程序已终止运行, 请检查!"
+                            await app.send_message(self.to_chat, fail_msg)
+                            LOG.error(fail_msg)
                             return
             self.handler.update_last_msg_id(cur_min_msg_id)
             self.handler.update_last_msg_id(cur_max_msg_id, update_max=True)
-            LOG.info(f"任务完成: 成功数: {self.success_count}, 失败数: {self.fail_count}")
+            success_msg = f"任务完成: 成功数: {self.success_count}, 失败数: {self.fail_count}"
+            await app.send_message(self.to_chat, success_msg)
+            LOG.info(success_msg)
 
 
 def main():
