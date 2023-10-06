@@ -59,6 +59,7 @@ class Saver:
         return False
 
     async def save(self):
+        LOG.info(f"启动任务: {self.from_chat} -> {self.to_chat}")
         async with Client(common.SESSION_FILE, common.CFG.api_id, common.CFG.api_hash,
                           proxy=common.CFG.proxy_pyrogram_json,
                           parse_mode=enums.ParseMode.DISABLED) as app:
