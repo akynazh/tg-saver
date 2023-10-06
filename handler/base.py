@@ -1,10 +1,11 @@
 import sqlite3
 import time
-from typing import Type
 
 import meilisearch
 import common
 from pyrogram.types import Message
+
+LOG = common.Logger(path_log_file=f"{common.PATH_ROOT}/log.txt").logger
 
 
 class FileHandler:
@@ -166,6 +167,7 @@ class MediaGroupHandler(FileHandler):
                 self.conn.cursor().execute(
                     f"""INSERT INTO {self.tb_name}_i(id, media_group_id, ori_chat_name, content) VALUES (?, ?, ?, ?)""",
                     (i_id, old_msg.media_group_id, self.from_chat, content))
+                LOG.info(f"成功保存新 id: {i_id}")
         self.conn.commit()
 
     def gen_id_from_content(self, content) -> str:
