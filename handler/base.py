@@ -75,8 +75,9 @@ class FileHandler:
         pass
 
     def check_if_file_is_ok(self, msg) -> bool:
-        return self.check_if_has_no_markup(msg) \
-            and self.check_if_content_is_ok(msg)
+        return self.check_if_content_is_ok(msg)
+        # return self.check_if_has_no_markup(msg) \
+        #     and self.check_if_content_is_ok(msg)
 
     def check_if_has_no_markup(self, msg):
         return True if not msg.reply_markup else False
