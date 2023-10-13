@@ -7,10 +7,6 @@ sleep 3
 python3 ~/Codes/tg-saver/saver.py -fc DoO_o -tc zh_coav_channel_1 -ft 1 -rn
 sleep 3
 python3 ~/Codes/tg-saver/saver.py -fc youzhi7777 -tc zh_coav_channel_1 -ft 1 -rn
-sleep 3
-python3 ~/Codes/tg-saver/saver.py -fc junshiguancha -tc zh_jav_channel_1 -ft 0 -ct 102 -lm 300
-sleep 60
-python3 ~/Codes/tg-saver/saver.py -fc AvYyDS -tc zh_jav_channel_1 -ft 0 -ct 102 -lm 300
 
 
 cd ~/Codes/tg-saver && python3 -m utils.clean
