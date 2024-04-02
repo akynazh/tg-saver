@@ -13,7 +13,7 @@ res = (
     CONN.cursor()
     .execute(
         f"""
-select count(*) from t_tg_zh_coav_channel_1 where instr(content, {content});
+select count(*) from t_tg_zh_coav_channel_1 where instr(content, '{content}');
 """
     )
     .fetchone()[0]
