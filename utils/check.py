@@ -16,6 +16,6 @@ res = (
 select count(*) from t_tg_zh_coav_channel_1 where content = '{content}';
 """
     )
-    .fetchone()
+    .fetchone()[0]
 )
-LOG.info(f"clean t_tg_zh_coav_channel_1: {res}")
+LOG.info(f"get “{content}” from t_tg_zh_coav_channel_1: {res}")
