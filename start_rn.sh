@@ -10,6 +10,7 @@ $path_py ~/Codes/tg-saver/saver.py -fc ribenav8899 -tc zh_jav_channel_1 -ft 1 -c
 sleep 3
 $path_py ~/Codes/tg-saver/saver.py -fc FanChPa -tc zh_coav_channel_1 -ft 1 -rn
 sleep 3
+$path_py ~/Codes/tg-saver/saver.py -fc NBwuma -tc zh_coav_channel_1 -ft 1 -rn
 
 # cd ~/Codes/tg-saver && $path_py -m utils.stat
 cd ~/Codes/tg-saver && $path_py -m utils.clean
