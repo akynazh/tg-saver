@@ -1,10 +1,15 @@
 # tg-saver
 
-一个可用于保存 Telegram 任意公开群组或频道内容的工具, 暂不开源。
+A tool that can be used to save the content of any public group or channel on Telegram.
 
-# 思路
+## How
 
-1. 获取其他频道历史消息
-2. 转发符合条件的消息到自己到频道
-3. 将转后的自己频道的消息按照存入数据库
-4. 机器人加入自己的频道, 然后就可以从数据库获取文件发给别人了
+1. Get historical messages from other channels
+2. Forward eligible messages to your own channel
+3. Store the transferred messages of your own channel into the database as follows
+4. The bot joins its own channel and can then retrieve files from the database and send them to others
+
+## Thanks
+
+- [pyTelegramBotAPI](https://github.com/eternnoir/pyTelegramBotAPI)
+- [Pyrogram](https://github.com/pyrogram/pyrogram)
